@@ -1,6 +1,7 @@
 import { KEY, META_KEYES, NODE_TYPE, NODE_HOST } from "../constants";
 import { diffProps } from "./diff-props";
 import { isVnodeValue, createElement, fillVnodeValue } from "../vnode";
+import { endQueue } from "../task";
 /**
  *
  * @param {import("./render").ConfigRender} config
@@ -41,7 +42,7 @@ export function diff(id, node, nextVnode, isSvg) {
     }
     if (nextNodeType == null) {
         if (node.nodeValue != nextChildren) {
-            node.nodeValue = nextChildren;
+            endQueue(() => (node.nodeValue = nextChildren));
         }
     } else {
         if (shadowDom != nextShadowDom) {
